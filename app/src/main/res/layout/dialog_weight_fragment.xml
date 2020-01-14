@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/newExerciseToolbar"
+        android:id="@+id/weightDialogToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -21,7 +21,7 @@
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/newExerciseToolbar">
+        app:layout_constraintTop_toBottomOf="@id/weightDialogToolbar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/dateTextInputEditText"

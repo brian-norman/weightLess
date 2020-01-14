@@ -24,6 +24,12 @@ class MainFragment : Fragment() {
 
     private val navController by lazy { this.findNavController() }
 
+    private val weightDialogSharedViewModel by lazy {
+        requireActivity().run {
+            ViewModelProviders.of(this)[WeightDialogSharedViewModel::class.java]
+        }
+    }
+
     private val swipeHandler by lazy {
         object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -72,12 +78,17 @@ class MainFragment : Fragment() {
 
         addWeightButton.setOnClickListener {
             navController.navigate(R.id.action_mainFragment_to_weightDialogFragment)
-//            viewModel.addWeight(WeightEntry("Today", 106f))
         }
 
         viewModel.chartData.observe(viewLifecycleOwner, Observer {
             chartAdapter.setData(it.map { weightEntry ->  weightEntry.weight })
             weightAdapter.setData(it)
+        })
+
+        weightDialogSharedViewModel.newWeightEntry.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                viewModel.addWeight(it)
+            }
         })
     }
 
