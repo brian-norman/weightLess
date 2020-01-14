@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,8 @@ class MainFragment : Fragment() {
 
     private val chartAdapter = ChartAdapter(emptyList())
     private val weightAdapter = WeightAdapter(emptyList())
+
+    private val navController by lazy { this.findNavController() }
 
     private val swipeHandler by lazy {
         object : SwipeToDeleteCallback(requireContext()) {
@@ -68,7 +71,8 @@ class MainFragment : Fragment() {
         }
 
         addWeightButton.setOnClickListener {
-            viewModel.addWeight(WeightEntry("Today", 106f))
+            navController.navigate(R.id.action_mainFragment_to_weightDialogFragment)
+//            viewModel.addWeight(WeightEntry("Today", 106f))
         }
 
         viewModel.chartData.observe(viewLifecycleOwner, Observer {
