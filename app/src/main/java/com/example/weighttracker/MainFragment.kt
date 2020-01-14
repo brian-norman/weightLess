@@ -43,12 +43,12 @@ class MainFragment : Fragment() {
         }
 
         addWeightButton.setOnClickListener {
-            viewModel.addNewWeight(100f)
+            viewModel.addNewWeight(WeightEntry("Today", 106f))
         }
 
         viewModel.chartData.observe(viewLifecycleOwner, Observer {
-            chartAdapter.setData(it ?: emptyList())
-            weightAdapter.setData(it.map { weight -> WeightEntry("", weight) })
+            chartAdapter.setData(it.map { weightEntry ->  weightEntry.weight })
+            weightAdapter.setData(it)
         })
     }
 
