@@ -36,6 +36,10 @@ class MainFragment : Fragment() {
             }
         }
 
+        addWeightButton.setOnClickListener {
+            viewModel.addNewWeight(100f)
+        }
+
         viewModel.chartData.observe(viewLifecycleOwner, Observer {
             chartAdapter.setData(it ?: emptyList())
         })
