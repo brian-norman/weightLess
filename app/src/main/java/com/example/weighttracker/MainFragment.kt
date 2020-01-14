@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private val chartAdapter = ChartAdapter(emptyList())
+    private val weightAdapter = WeightAdapter(emptyList())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +28,10 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         sparkView.adapter = chartAdapter
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = weightAdapter
+        }
 
         sparkView.setScrubListener {
             if (it != null) {
@@ -42,8 +48,8 @@ class MainFragment : Fragment() {
 
         viewModel.chartData.observe(viewLifecycleOwner, Observer {
             chartAdapter.setData(it ?: emptyList())
+            weightAdapter.setData(it.map { weight -> WeightEntry("", weight) })
         })
     }
 
 }
-
