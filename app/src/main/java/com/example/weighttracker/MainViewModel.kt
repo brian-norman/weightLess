@@ -1,42 +1,29 @@
 package com.example.weighttracker
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.weighttracker.data.WeightDao
+import com.example.weighttracker.data.WeightEntity
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val weightDao: WeightDao) : ViewModel() {
 
-    private val _chartData: MutableLiveData<List<WeightEntry>> = MutableLiveData()
-    val chartData: LiveData<List<WeightEntry>> = _chartData
+    val weightEntities: LiveData<List<WeightEntity>> = weightDao.getAll().asLiveData()
 
-    init {
-        _chartData.postValue(
-            listOf(
-                WeightEntry("Days Ago", 100f),
-                WeightEntry("Days Ago", 101f),
-                WeightEntry("Days Ago", 103f),
-                WeightEntry("Days Ago", 104f),
-                WeightEntry("Days Ago", 99f)
-            )
-        )
+    fun insertWeight(weightEntity: WeightEntity) {
+        viewModelScope.launch { weightDao.insert(weightEntity) }
     }
 
-    fun addWeight(weightEntry: WeightEntry) {
-        val mutable = _chartData.value?.toMutableList() ?: mutableListOf()
-        mutable.add(weightEntry)
-        _chartData.value = mutable
+    fun updateWeight(weightEntity: WeightEntity) {
+        viewModelScope.launch { weightDao.update(weightEntity) }
     }
 
-    fun updateWeight(weightEntry: WeightEntry) {
-        
-    }
-
-    fun removeWeightEntry(position: Int): WeightEntry {
-        val deletedWeightEntry = _chartData.value!![position]
-        val mutable = _chartData.value!!.toMutableList()
-        mutable.removeAt(position)
-        _chartData.value = mutable
-        return deletedWeightEntry
+    fun deleteWeight(position: Int): WeightEntity {
+        val weight = weightEntities.value!![position]
+        viewModelScope.launch { weightDao.delete(weight) }
+        return weight
     }
 
 }

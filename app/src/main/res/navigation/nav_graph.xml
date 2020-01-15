@@ -20,10 +20,14 @@
         android:name="com.example.weighttracker.WeightDialogFragment"
         android:label="WeightDialogFragment">
         <argument
-            android:name="weightEntryDate"
+            android:name="weightEntityId"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="weightEntityDate"
             app:argType="long" />
         <argument
-            android:name="weightEntryWeight"
+            android:name="weightEntityWeight"
             android:defaultValue="0.0"
             app:argType="float" />
         <argument

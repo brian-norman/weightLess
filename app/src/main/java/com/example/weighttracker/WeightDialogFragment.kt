@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import com.example.weighttracker.data.WeightEntity
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.dialog_weight_fragment.*
 import java.text.SimpleDateFormat
@@ -51,14 +52,14 @@ class WeightDialogFragment: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (args.weightEntryDate != 0.toLong()) {
+        if (args.weightEntityDate != 0.toLong()) {
             dateTextInputEditText.setText(
                 SimpleDateFormat("MMM d, yyyy", Locale.US)
-                    .format(Date.from(Instant.ofEpochSecond(args.weightEntryDate)))
+                    .format(Date.from(Instant.ofEpochSecond(args.weightEntityDate)))
             )
         }
-        if (args.weightEntryWeight != 0f) {
-            weightTextInputEditText.setText(args.weightEntryWeight.toString())
+        if (args.weightEntityWeight != 0f) {
+            weightTextInputEditText.setText(args.weightEntityWeight.toString())
         }
 
         initDatePicker()
@@ -81,18 +82,19 @@ class WeightDialogFragment: DialogFragment() {
 
     private fun saveWeightEntry() {
         if (args.shouldEdit) {
-            weightDialogSharedViewModel.saveEditWeightEntry(
-                WeightEntry(
-                    dateTextInputEditText.text.toString(),
-                    weightTextInputEditText.toFloatOrZero()
+            weightDialogSharedViewModel.saveEditWeightEntity(
+                WeightEntity(
+                    id = args.weightEntityId,
+                    date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(dateTextInputEditText.text.toString()).toInstant().epochSecond,
+                    weight = weightTextInputEditText.toFloatOrZero()
                 )
             )
 
         } else {
-            weightDialogSharedViewModel.saveNewWeightEntry(
-                WeightEntry(
-                    dateTextInputEditText.text.toString(),
-                    weightTextInputEditText.toFloatOrZero()
+            weightDialogSharedViewModel.saveNewWeightEntity(
+                WeightEntity(
+                    date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(dateTextInputEditText.text.toString()).toInstant().epochSecond,
+                    weight = weightTextInputEditText.toFloatOrZero()
                 )
             )
         }

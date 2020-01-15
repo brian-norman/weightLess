@@ -12,12 +12,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weighttracker.data.AppDatabase
+import com.example.weighttracker.data.WeightEntity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel by lazy { MainViewModel(AppDatabase(requireContext()).weightDao()) }
 
     private val chartAdapter = ChartAdapter(emptyList())
     private val weightAdapter = WeightAdapter(emptyList()) { onWeightEntryClicked(it) }
@@ -34,13 +36,13 @@ class MainFragment : Fragment() {
         object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val deletedWeightEntry: WeightEntry = viewModel.removeWeightEntry(position)
+                val deletedWeightEntity: WeightEntity = viewModel.deleteWeight(position)
                 Snackbar.make(
                     viewHolder.itemView,
                     "Entry deleted!",
                     Snackbar.LENGTH_LONG
                 ) .apply {
-                    setAction("UNDO") { viewModel.addWeight(deletedWeightEntry) }
+                    setAction("UNDO") { viewModel.insertWeight(deletedWeightEntity) }
                     setActionTextColor(Color.YELLOW)
                     show()
                 }
@@ -58,7 +60,6 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         sparkView.adapter = chartAdapter
         recyclerView.apply {
@@ -79,38 +80,39 @@ class MainFragment : Fragment() {
         addWeightButton.setOnClickListener {
             val action = MainFragmentDirections
                 .actionMainFragmentToWeightDialogFragment(
-                    weightEntryDate = 0.toLong(),
-                    weightEntryWeight = 0f,
+                    weightEntityDate = 0.toLong(),
+                    weightEntityWeight = 0f,
                     shouldEdit = false
                 )
             navController.navigate(action)
         }
 
-        viewModel.chartData.observe(viewLifecycleOwner, Observer {
-            chartAdapter.setData(it.map { weightEntry ->  weightEntry.weight })
+        viewModel.weightEntities.observe(viewLifecycleOwner, Observer {
+            chartAdapter.setData(it.map { weightEntity ->  weightEntity.weight })
             weightAdapter.setData(it)
         })
 
-        weightDialogSharedViewModel.newWeightEntry.observe(viewLifecycleOwner, Observer {
+        weightDialogSharedViewModel.newWeightEntity.observe(viewLifecycleOwner, Observer {
             it?.let {
-                viewModel.addWeight(it)
+                viewModel.insertWeight(it)
             }
-            weightDialogSharedViewModel.clearNewWeightEntry()
+            weightDialogSharedViewModel.clearNewWeightEntity()
         })
 
-        weightDialogSharedViewModel.editWeightEntry.observe(viewLifecycleOwner, Observer {
+        weightDialogSharedViewModel.editWeightEntity.observe(viewLifecycleOwner, Observer {
             it?.let {
                 viewModel.updateWeight(it)
             }
-            weightDialogSharedViewModel.clearEditWeightEntry()
+            weightDialogSharedViewModel.clearEditWeightEntity()
         })
     }
 
-    private fun onWeightEntryClicked(weightEntry: WeightEntry) {
+    private fun onWeightEntryClicked(weightEntity: WeightEntity) {
         val action = MainFragmentDirections
             .actionMainFragmentToWeightDialogFragment(
-                weightEntryDate = 0.toLong(),
-                weightEntryWeight = weightEntry.weight,
+                weightEntityId = weightEntity.id,
+                weightEntityDate = weightEntity.date,
+                weightEntityWeight = weightEntity.weight,
                 shouldEdit = true
             )
         navController.navigate(action)
