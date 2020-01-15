@@ -1,6 +1,5 @@
 package com.example.weighttracker
 
-import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,18 +13,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.dialog_weight_fragment.*
 import kotlinx.android.synthetic.main.main_fragment.*
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.util.*
 
 class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
     private val chartAdapter = ChartAdapter(emptyList())
-    private val weightAdapter = WeightAdapter(emptyList())
+    private val weightAdapter = WeightAdapter(emptyList()) { onWeightEntryClicked(it) }
 
     private val navController by lazy { this.findNavController() }
 
@@ -82,7 +77,13 @@ class MainFragment : Fragment() {
         }
 
         addWeightButton.setOnClickListener {
-            navController.navigate(R.id.action_mainFragment_to_weightDialogFragment)
+            val action = MainFragmentDirections
+                .actionMainFragmentToWeightDialogFragment(
+                    weightEntryDate = 0.toLong(),
+                    weightEntryWeight = 0f,
+                    shouldEdit = false
+                )
+            navController.navigate(action)
         }
 
         viewModel.chartData.observe(viewLifecycleOwner, Observer {
@@ -94,7 +95,25 @@ class MainFragment : Fragment() {
             it?.let {
                 viewModel.addWeight(it)
             }
+            weightDialogSharedViewModel.clearNewWeightEntry()
         })
+
+        weightDialogSharedViewModel.editWeightEntry.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                viewModel.updateWeight(it)
+            }
+            weightDialogSharedViewModel.clearEditWeightEntry()
+        })
+    }
+
+    private fun onWeightEntryClicked(weightEntry: WeightEntry) {
+        val action = MainFragmentDirections
+            .actionMainFragmentToWeightDialogFragment(
+                weightEntryDate = 0.toLong(),
+                weightEntryWeight = weightEntry.weight,
+                shouldEdit = true
+            )
+        navController.navigate(action)
     }
 
 }

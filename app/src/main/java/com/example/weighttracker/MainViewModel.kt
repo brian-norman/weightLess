@@ -27,6 +27,10 @@ class MainViewModel : ViewModel() {
         _chartData.value = mutable
     }
 
+    fun updateWeight(weightEntry: WeightEntry) {
+        
+    }
+
     fun removeWeightEntry(position: Int): WeightEntry {
         val deletedWeightEntry = _chartData.value!![position]
         val mutable = _chartData.value!!.toMutableList()

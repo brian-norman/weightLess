@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.dialog_weight_fragment.*
 import java.text.SimpleDateFormat
@@ -14,6 +15,8 @@ import java.time.Instant
 import java.util.*
 
 class WeightDialogFragment: DialogFragment() {
+
+    private val args: WeightDialogFragmentArgs by navArgs()
 
     private val weightDialogSharedViewModel by lazy {
         requireActivity().run {
@@ -48,10 +51,20 @@ class WeightDialogFragment: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (args.weightEntryDate != 0.toLong()) {
+            dateTextInputEditText.setText(
+                SimpleDateFormat("MMM d, yyyy", Locale.US)
+                    .format(Date.from(Instant.ofEpochSecond(args.weightEntryDate)))
+            )
+        }
+        if (args.weightEntryWeight != 0f) {
+            weightTextInputEditText.setText(args.weightEntryWeight.toString())
+        }
+
         initDatePicker()
 
         weightDialogToolbar.apply {
-            title = "New Weight Entry"
+            title = if (args.shouldEdit) "Edit Weight" else "New Weight"
             setNavigationOnClickListener { dismiss() }
             inflateMenu(R.menu.weight_dialog)
             setOnMenuItemClickListener { item ->
@@ -67,12 +80,22 @@ class WeightDialogFragment: DialogFragment() {
     }
 
     private fun saveWeightEntry() {
-        weightDialogSharedViewModel.saveNewWeightEntry(
-            WeightEntry(
-                dateTextInputEditText.text.toString(),
-                weightTextInputEditText.toFloatOrZero()
+        if (args.shouldEdit) {
+            weightDialogSharedViewModel.saveEditWeightEntry(
+                WeightEntry(
+                    dateTextInputEditText.text.toString(),
+                    weightTextInputEditText.toFloatOrZero()
+                )
             )
-        )
+
+        } else {
+            weightDialogSharedViewModel.saveNewWeightEntry(
+                WeightEntry(
+                    dateTextInputEditText.text.toString(),
+                    weightTextInputEditText.toFloatOrZero()
+                )
+            )
+        }
     }
 
     private fun initDatePicker() {
@@ -80,8 +103,8 @@ class WeightDialogFragment: DialogFragment() {
         if (dateTextInputEditText.text.isNullOrEmpty()) {
             dateTextInputEditText.setText(
                 SimpleDateFormat("MMM d, yyyy", Locale.US).format(
-                    Date.from(
-                        Instant.now())))
+                    Date.from(Instant.now()))
+            )
         }
 
         val myCalendar = Calendar.getInstance()

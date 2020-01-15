@@ -1,7 +1,6 @@
 package com.example.weighttracker
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -9,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_weight_entry.view.*
 
 class WeightAdapter(
-    private var data: List<WeightEntry>
+    private var data: List<WeightEntry>,
+    private val clickListener: (WeightEntry) -> Unit
 ) : RecyclerView.Adapter<WeightAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: CardView) : RecyclerView.ViewHolder(itemView) {
@@ -26,6 +26,7 @@ class WeightAdapter(
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.itemView.setOnClickListener { clickListener(data[position]) }
         holder.weightTextView.text = data[position].weight.toString()
         holder.dateTextView.text = data[position].date
     }

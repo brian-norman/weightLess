@@ -18,6 +18,17 @@
     <dialog
         android:id="@+id/weightDialogFragment"
         android:name="com.example.weighttracker.WeightDialogFragment"
-        android:label="WeightDialogFragment" />
+        android:label="WeightDialogFragment">
+        <argument
+            android:name="weightEntryDate"
+            app:argType="long" />
+        <argument
+            android:name="weightEntryWeight"
+            android:defaultValue="0.0"
+            app:argType="float" />
+        <argument
+            android:name="shouldEdit"
+            app:argType="boolean" />
+    </dialog>
 
 </navigation>
