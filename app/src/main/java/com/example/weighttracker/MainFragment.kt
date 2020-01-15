@@ -60,6 +60,7 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        toolbar.setTitle(R.string.app_name)
 
         sparkView.adapter = chartAdapter
         recyclerView.apply {
