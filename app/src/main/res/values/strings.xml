@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Weight Tracker</string>
     <string name="scrub_empty">Tap and hold the graph to scrub.</string>
+    <string name="empty_state">Add some weights to start seeing data!</string>
 </resources>

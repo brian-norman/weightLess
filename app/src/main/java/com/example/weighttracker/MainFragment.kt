@@ -74,7 +74,8 @@ class MainFragment : Fragment() {
                 val value: Float = it as Float
                 message.text = value.toString()
             } else {
-                message.text = getString(R.string.scrub_empty)
+                val weights = viewModel.weightEntities.value ?: emptyList()
+                message.text = if (weights.isEmpty()) getString(R.string.empty_state) else getString(R.string.scrub_empty)
             }
         }
 
@@ -89,8 +90,10 @@ class MainFragment : Fragment() {
         }
 
         viewModel.weightEntities.observe(viewLifecycleOwner, Observer {
-            chartAdapter.setData(it.map { weightEntity ->  weightEntity.weight })
-            weightAdapter.setData(it)
+            val weights = it ?: emptyList()
+            chartAdapter.setData(weights.map { weightEntity ->  weightEntity.weight })
+            weightAdapter.setData(weights)
+            message.text = if (weights.isEmpty()) getString(R.string.empty_state) else getString(R.string.scrub_empty)
         })
 
         weightDialogSharedViewModel.newWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
