@@ -1,5 +1,6 @@
 package com.example.weighttracker
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.dialog_weight_fragment.*
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.util.*
 
 class WeightDialogFragment: DialogFragment() {
 
@@ -44,6 +48,8 @@ class WeightDialogFragment: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initDatePicker()
+
         weightDialogToolbar.apply {
             title = "New Weight Entry"
             setNavigationOnClickListener { dismiss() }
@@ -67,6 +73,35 @@ class WeightDialogFragment: DialogFragment() {
                 weightTextInputEditText.toFloatOrZero()
             )
         )
+    }
+
+    private fun initDatePicker() {
+
+        if (dateTextInputEditText.text.isNullOrEmpty()) {
+            dateTextInputEditText.setText(
+                SimpleDateFormat("MMM d, yyyy", Locale.US).format(
+                    Date.from(
+                        Instant.now())))
+        }
+
+        val myCalendar = Calendar.getInstance()
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            myCalendar.apply {
+                set(Calendar.YEAR, year)
+                set(Calendar.MONTH, month)
+                set(Calendar.DAY_OF_MONTH, day)
+                dateTextInputEditText.setText(SimpleDateFormat("MMM d, yyyy", Locale.US).format(myCalendar.time))
+            }
+        }
+
+        dateTextInputEditText.setOnClickListener {
+            DatePickerDialog(
+                requireContext(),
+                dateSetListener,
+                myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 package com.example.weighttracker
 
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +14,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.dialog_weight_fragment.*
 import kotlinx.android.synthetic.main.main_fragment.*
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.util.*
 
 class MainFragment : Fragment() {
 
