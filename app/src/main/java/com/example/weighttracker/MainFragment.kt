@@ -93,16 +93,29 @@ class MainFragment : Fragment() {
             weightAdapter.setData(it)
         })
 
-        weightDialogSharedViewModel.newWeightEntity.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                viewModel.insertWeight(it)
+        weightDialogSharedViewModel.newWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
+            weightEntity?.let { newWeightEntity ->
+                val currentWeights = viewModel.weightEntities.value ?: listOf()
+                val collision = currentWeights.filter { it.date == newWeightEntity.date }
+                if (collision.isNotEmpty()) {
+                    viewModel.updateWeight(collision[0].copy(weight = newWeightEntity.weight))
+                } else {
+                    viewModel.insertWeight(weightEntity)
+                }
             }
             weightDialogSharedViewModel.clearNewWeightEntity()
         })
 
-        weightDialogSharedViewModel.editWeightEntity.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                viewModel.updateWeight(it)
+        weightDialogSharedViewModel.editWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
+            weightEntity?.let { editedWeightEntity ->
+                val currentWeights = viewModel.weightEntities.value!!
+                val collision = currentWeights.filter { it.date == editedWeightEntity.date }
+                if (collision.isNotEmpty()) {
+                    viewModel.updateWeight(collision[0].copy(weight = editedWeightEntity.weight))
+                    viewModel.deleteWeight(editedWeightEntity)
+                } else {
+                    viewModel.updateWeight(editedWeightEntity)
+                }
             }
             weightDialogSharedViewModel.clearEditWeightEntity()
         })

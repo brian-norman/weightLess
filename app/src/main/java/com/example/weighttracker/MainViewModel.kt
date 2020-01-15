@@ -20,6 +20,10 @@ class MainViewModel(private val weightDao: WeightDao) : ViewModel() {
         viewModelScope.launch { weightDao.update(weightEntity) }
     }
 
+    fun deleteWeight(weightEntity: WeightEntity) {
+        viewModelScope.launch { weightDao.delete(weightEntity) }
+    }
+
     fun deleteWeight(position: Int): WeightEntity {
         val weight = weightEntities.value!![position]
         viewModelScope.launch { weightDao.delete(weight) }
