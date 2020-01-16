@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">Weight Tracker</string>
+    <string name="app_name">WeightLess</string>
     <string name="scrub_empty">Tap and hold the graph to scrub.</string>
     <string name="empty_state">Add some weights to start seeing data!</string>
+    <string name="weight_deleted">Entry deleted!</string>
+    <string name="undo">UNDO</string>
+    <string name="edit_weight">Edit Weight</string>
+    <string name="new_weight">New Weight</string>
 </resources>

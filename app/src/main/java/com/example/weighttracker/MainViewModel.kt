@@ -1,14 +1,15 @@
 package com.example.weighttracker
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.weighttracker.data.WeightDao
 import com.example.weighttracker.data.WeightEntity
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val weightDao: WeightDao) : ViewModel() {
+class MainViewModel(private val weightDao: WeightDao) : ViewModelProvider.Factory, ViewModel() {
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return MainViewModel(weightDao) as T
+    }
 
     val weightEntities: LiveData<List<WeightEntity>> = weightDao.getAll().asLiveData()
 

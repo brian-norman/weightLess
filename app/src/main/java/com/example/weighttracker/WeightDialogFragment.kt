@@ -65,7 +65,7 @@ class WeightDialogFragment: DialogFragment() {
         initDatePicker()
 
         toolbar.apply {
-            title = if (args.shouldEdit) "Edit Weight" else "New Weight"
+            title = if (args.shouldEdit) getString(R.string.edit_weight) else getString(R.string.new_weight)
             setNavigationOnClickListener { dismiss() }
             inflateMenu(R.menu.weight_dialog)
             setOnMenuItemClickListener { item ->

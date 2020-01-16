@@ -19,7 +19,12 @@ import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
 
-    private val viewModel by lazy { MainViewModel(AppDatabase(requireContext()).weightDao()) }
+    private val viewModel by lazy {
+        ViewModelProviders.of(
+            this,
+            MainViewModel(AppDatabase(requireContext()).weightDao())
+        )[MainViewModel::class.java]
+    }
 
     private val chartAdapter = ChartAdapter(emptyList())
     private val weightAdapter = WeightAdapter(emptyList()) { onWeightEntryClicked(it) }
@@ -39,10 +44,10 @@ class MainFragment : Fragment() {
                 val deletedWeightEntity: WeightEntity = viewModel.deleteWeight(position)
                 Snackbar.make(
                     viewHolder.itemView,
-                    "Entry deleted!",
+                    getString(R.string.weight_deleted),
                     Snackbar.LENGTH_LONG
                 ) .apply {
-                    setAction("UNDO") { viewModel.insertWeight(deletedWeightEntity) }
+                    setAction(getString(R.string.undo)) { viewModel.insertWeight(deletedWeightEntity) }
                     setActionTextColor(Color.YELLOW)
                     show()
                 }
@@ -75,7 +80,7 @@ class MainFragment : Fragment() {
                 message.text = value.toString()
             } else {
                 val weights = viewModel.weightEntities.value ?: emptyList()
-                message.text = if (weights.isEmpty()) getString(R.string.empty_state) else getString(R.string.scrub_empty)
+                message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
             }
         }
 
@@ -93,7 +98,7 @@ class MainFragment : Fragment() {
             val weights = it ?: emptyList()
             chartAdapter.setData(weights.map { weightEntity ->  weightEntity.weight })
             weightAdapter.setData(weights)
-            message.text = if (weights.isEmpty()) getString(R.string.empty_state) else getString(R.string.scrub_empty)
+            message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
         })
 
         weightDialogSharedViewModel.newWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
