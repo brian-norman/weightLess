@@ -1,4 +1,4 @@
-package com.example.weighttracker.data
+package com.brian.weightLess.data
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow

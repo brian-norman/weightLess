@@ -1,4 +1,4 @@
-package com.example.weighttracker
+package com.brian.weightLess
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
-import com.example.weighttracker.data.WeightEntity
+import com.brian.weightLess.data.WeightEntity
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.dialog_weight_fragment.*
 import java.text.SimpleDateFormat

@@ -1,4 +1,4 @@
-package com.example.weighttracker
+package com.brian.weightLess
 
 import org.junit.Test
 

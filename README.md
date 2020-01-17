@@ -18,3 +18,7 @@
 - [ ] Units for kg/lbs
 - [ ] CSV importing and exporting
 - [ ] Setting goal weight (adds a horizontal flat line to chart)
+- [ ] Make the chart on vertical view a 30-day view, and then a little expand button at the top can expand it to see lifetime history
+- [ ] Homescreen widget for quick entry of weight
+- [ ] Google assistant action for quick entry of weight
+- [ ] Opt-in cloud back-up

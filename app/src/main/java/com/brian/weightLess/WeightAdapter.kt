@@ -1,11 +1,11 @@
-package com.example.weighttracker
+package com.brian.weightLess
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weighttracker.data.WeightEntity
+import com.brian.weightLess.data.WeightEntity
 import kotlinx.android.synthetic.main.item_weight_entry.view.*
 import java.text.SimpleDateFormat
 import java.util.*

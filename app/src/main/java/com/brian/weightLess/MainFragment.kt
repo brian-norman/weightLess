@@ -1,4 +1,4 @@
-package com.example.weighttracker
+package com.brian.weightLess
 
 import android.graphics.Color
 import android.os.Bundle
@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weighttracker.data.AppDatabase
-import com.example.weighttracker.data.WeightEntity
+import com.brian.weightLess.data.AppDatabase
+import com.brian.weightLess.data.WeightEntity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.main_fragment.*
 

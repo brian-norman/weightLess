@@ -1,4 +1,4 @@
-package com.example.weighttracker.data
+package com.brian.weightLess.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

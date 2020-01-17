@@ -1,9 +1,9 @@
-package com.example.weighttracker
+package com.brian.weightLess
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.weighttracker.data.WeightEntity
+import com.brian.weightLess.data.WeightEntity
 
 class WeightDialogSharedViewModel : ViewModel() {
 

@@ -1,8 +1,8 @@
-package com.example.weighttracker
+package com.brian.weightLess
 
 import androidx.lifecycle.*
-import com.example.weighttracker.data.WeightDao
-import com.example.weighttracker.data.WeightEntity
+import com.brian.weightLess.data.WeightDao
+import com.brian.weightLess.data.WeightEntity
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val weightDao: WeightDao) : ViewModelProvider.Factory, ViewModel() {
