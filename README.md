@@ -1,5 +1,8 @@
-# Weight Tracker
-⚖️ Weight Tracking Android Application
+![image](feature-graphic.png)
+<a href="https://play.google.com/store/apps/details?id=com.brian.weightless">
+    <img alt="Get it on Google Play"
+        height="80"
+        src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
 
 ## Tech 👨🏽‍💻
 - Navigation Jetpack Component 
@@ -11,7 +14,7 @@
 ## Shoutouts 📣❤️
 - Shoutout [Wesley Tang](https://github.com/wesley-tang) for the epic logo
 - Shoutout [Firewatch](https://www.firewatchgame.com) (one of my favourite games of all time) for the colour scheme inspiration
-- Shoutout [RobinHood](https://robinhood.com) for the amazing [Spark]() library for the chart 
+- Shoutout [RobinHood](https://robinhood.com) for the amazing [Spark](https://github.com/robinhood/spark) library for the chart 
 
 ## TODO 🙇
 (Feel free to open a PR for any of these or something else you want in the app 😁)
@@ -22,3 +25,4 @@
 - [ ] Homescreen widget for quick entry of weight
 - [ ] Google assistant action for quick entry of weight
 - [ ] Opt-in cloud back-up
+- [ ] Kotlin Multiplatform and other clients
