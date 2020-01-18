@@ -19,8 +19,11 @@
 ## TODO 🙇
 (Feel free to open a PR for any of these or something else you want in the app 😁)
 - [ ] Units for kg/lbs
+- [ ] Empty state for chart
+- [ ] When scrubbing, also show the date alongside the weight
 - [ ] CSV importing and exporting
 - [ ] Setting goal weight (adds a horizontal flat line to chart)
+- [ ] Hold & Press to enter bulk-select mode where you can bulk delete
 - [ ] Make the chart on vertical view a 30-day view, and then a little expand button at the top can expand it to see lifetime history
 - [ ] Homescreen widget for quick entry of weight
 - [ ] Google assistant action for quick entry of weight
