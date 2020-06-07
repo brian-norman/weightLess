@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brian.weightLess.data.AppDatabase
 import com.brian.weightLess.data.WeightEntity
+import com.brian.weightLess.data.getDate
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.main_fragment.*
 
@@ -69,8 +70,8 @@ class MainFragment : Fragment() {
 
         sparkView.setScrubListener {
             if (it != null) {
-                val value: Float = it as Float
-                message.text = value.toString()
+                val weightEntity = it as WeightEntity
+                message.text = getString(R.string.scrubber_label, weightEntity.weight.toString(), weightEntity.getDate())
             } else {
                 val weights = viewModel.weightEntities.value ?: emptyList()
                 message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
@@ -89,7 +90,7 @@ class MainFragment : Fragment() {
 
         viewModel.weightEntities.observe(viewLifecycleOwner, Observer {
             val weights = it ?: emptyList()
-            chartAdapter.setData(weights.map { weightEntity ->  weightEntity.weight })
+            chartAdapter.setData(weights)
             weightAdapter.setData(weights)
             message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
         })

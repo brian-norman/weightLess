@@ -6,4 +6,5 @@
     <string name="undo">UNDO</string>
     <string name="edit_weight">Edit Weight</string>
     <string name="new_weight">New Weight</string>
+    <string name="scrubber_label">%s (%s)</string>
 </resources>

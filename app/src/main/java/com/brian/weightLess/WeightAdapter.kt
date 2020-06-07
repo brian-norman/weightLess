@@ -6,9 +6,8 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.brian.weightLess.data.WeightEntity
+import com.brian.weightLess.data.getDate
 import kotlinx.android.synthetic.main.item_weight_entry.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class WeightAdapter(
     private var data: List<WeightEntity>,
@@ -31,7 +30,7 @@ class WeightAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener { clickListener(data[position]) }
         holder.weightTextView.text = data[position].weight.toString()
-        holder.dateTextView.text = SimpleDateFormat("MMM d, yyyy", Locale.US).format(data[position].date * 1000L)
+        holder.dateTextView.text = data[position].getDate()
     }
 
     fun setData(newData: List<WeightEntity>) {
