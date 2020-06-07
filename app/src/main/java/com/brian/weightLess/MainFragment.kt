@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,23 +20,15 @@ import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
 
-    private val viewModel by lazy {
-        ViewModelProviders.of(
-            this,
-            MainViewModel(AppDatabase(requireContext()).weightDao())
-        )[MainViewModel::class.java]
+    private val viewModel: MainViewModel by viewModels {
+        MainViewModel(AppDatabase(requireContext()).weightDao())
     }
+    private val sharedViewModel: WeightDialogSharedViewModel by viewModels( {requireActivity()} )
 
     private val chartAdapter = ChartAdapter(emptyList())
     private val weightAdapter = WeightAdapter(emptyList()) { onWeightEntryClicked(it) }
 
     private val navController by lazy { this.findNavController() }
-
-    private val weightDialogSharedViewModel by lazy {
-        requireActivity().run {
-            ViewModelProviders.of(this)[WeightDialogSharedViewModel::class.java]
-        }
-    }
 
     private val swipeHandler by lazy {
         object : SwipeToDeleteCallback(requireContext()) {
@@ -102,7 +94,7 @@ class MainFragment : Fragment() {
             message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
         })
 
-        weightDialogSharedViewModel.newWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
+        sharedViewModel.newWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
             weightEntity?.let { newWeightEntity ->
                 val currentWeights = viewModel.weightEntities.value ?: listOf()
                 val collision = currentWeights.filter { it.date == newWeightEntity.date }
@@ -115,7 +107,7 @@ class MainFragment : Fragment() {
             }
         })
 
-        weightDialogSharedViewModel.editWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
+        sharedViewModel.editWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
             weightEntity?.let { editedWeightEntity ->
                 val currentWeights = viewModel.weightEntities.value!!
                 val collision = currentWeights.filter { it.date == editedWeightEntity.date && it.id != editedWeightEntity.id }

@@ -1,15 +1,11 @@
 package com.brian.weightLess
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Color
-import android.graphics.RectF
+import android.graphics.*
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class SwipeToDeleteCallback(val context: Context) : ItemTouchHelper.SimpleCallback(
+abstract class SwipeToDeleteCallback(private val context: Context) : ItemTouchHelper.SimpleCallback(
     0,
     ItemTouchHelper.LEFT
 ) {

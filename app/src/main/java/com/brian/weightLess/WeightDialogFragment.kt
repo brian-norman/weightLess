@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.brian.weightLess.data.WeightEntity
 import com.google.android.material.textfield.TextInputEditText
@@ -19,11 +19,7 @@ class WeightDialogFragment: DialogFragment() {
 
     private val args: WeightDialogFragmentArgs by navArgs()
 
-    private val weightDialogSharedViewModel by lazy {
-        requireActivity().run {
-            ViewModelProviders.of(this)[WeightDialogSharedViewModel::class.java]
-        }
-    }
+    private val sharedViewModel: WeightDialogSharedViewModel by viewModels( {requireActivity()} )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +78,7 @@ class WeightDialogFragment: DialogFragment() {
 
     private fun saveWeightEntry() {
         if (args.shouldEdit) {
-            weightDialogSharedViewModel.saveEditWeightEntity(
+            sharedViewModel.saveEditWeightEntity(
                 WeightEntity(
                     id = args.weightEntityId,
                     date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(dateTextInputEditText.text.toString()).toInstant().epochSecond,
@@ -91,7 +87,7 @@ class WeightDialogFragment: DialogFragment() {
             )
 
         } else {
-            weightDialogSharedViewModel.saveNewWeightEntity(
+            sharedViewModel.saveNewWeightEntity(
                 WeightEntity(
                     date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(dateTextInputEditText.text.toString()).toInstant().epochSecond,
                     weight = weightTextInputEditText.toFloatOrZero()
