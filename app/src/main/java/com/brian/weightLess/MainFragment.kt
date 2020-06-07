@@ -71,7 +71,7 @@ class MainFragment : Fragment() {
         sparkView.setScrubListener {
             if (it != null) {
                 val weightEntity = it as WeightEntity
-                message.text = getString(R.string.scrubber_label, weightEntity.weight.toString(), weightEntity.getDate())
+                message.text = getString(R.string.scrubber_label_lbs, weightEntity.pounds.toString(), weightEntity.getDate())
             } else {
                 val weights = viewModel.weightEntities.value ?: emptyList()
                 message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
@@ -100,7 +100,7 @@ class MainFragment : Fragment() {
                 val currentWeights = viewModel.weightEntities.value ?: listOf()
                 val collision = currentWeights.filter { it.date == newWeightEntity.date }
                 if (collision.isNotEmpty()) {
-                    viewModel.updateWeight(collision[0].copy(weight = newWeightEntity.weight))
+                    viewModel.updateWeight(collision[0].copy(pounds = newWeightEntity.pounds))
                     Toast.makeText(context, "Updated existing entry with that date", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.insertWeight(weightEntity)
@@ -113,7 +113,7 @@ class MainFragment : Fragment() {
                 val currentWeights = viewModel.weightEntities.value!!
                 val collision = currentWeights.filter { it.date == editedWeightEntity.date && it.id != editedWeightEntity.id }
                 if (collision.isNotEmpty()) {
-                    viewModel.updateWeight(collision[0].copy(weight = editedWeightEntity.weight))
+                    viewModel.updateWeight(collision[0].copy(pounds = editedWeightEntity.pounds))
                     viewModel.deleteWeight(editedWeightEntity)
                     Toast.makeText(context, "Updated existing entry with that date", Toast.LENGTH_SHORT).show()
                 } else {
@@ -128,7 +128,7 @@ class MainFragment : Fragment() {
             .actionMainFragmentToWeightDialogFragment(
                 weightEntityId = weightEntity.id,
                 weightEntityDate = weightEntity.date,
-                weightEntityWeight = weightEntity.weight,
+                weightEntityWeight = weightEntity.pounds,
                 shouldEdit = true
             )
         navController.navigate(action)

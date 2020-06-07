@@ -82,7 +82,7 @@ class WeightDialogFragment: DialogFragment() {
                 WeightEntity(
                     id = args.weightEntityId,
                     date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(dateTextInputEditText.text.toString()).toInstant().epochSecond,
-                    weight = weightTextInputEditText.toFloatOrZero()
+                    pounds = weightTextInputEditText.toFloatOrZero()
                 )
             )
 
@@ -90,7 +90,7 @@ class WeightDialogFragment: DialogFragment() {
             sharedViewModel.saveNewWeightEntity(
                 WeightEntity(
                     date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(dateTextInputEditText.text.toString()).toInstant().epochSecond,
-                    weight = weightTextInputEditText.toFloatOrZero()
+                    pounds = weightTextInputEditText.toFloatOrZero()
                 )
             )
         }

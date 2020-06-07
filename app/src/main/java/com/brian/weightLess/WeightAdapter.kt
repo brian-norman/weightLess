@@ -29,7 +29,7 @@ class WeightAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener { clickListener(data[position]) }
-        holder.weightTextView.text = data[position].weight.toString()
+        holder.weightTextView.text = "${data[position].pounds} lbs"
         holder.dateTextView.text = data[position].getDate()
     }
 

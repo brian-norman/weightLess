@@ -9,7 +9,7 @@ import java.util.*
 data class WeightEntity (
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     var date: Long,
-    var weight: Float
+    var pounds: Float
 )
 
 fun WeightEntity.getDate(): String {

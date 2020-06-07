@@ -4,7 +4,7 @@ import com.brian.weightLess.data.WeightEntity
 import com.robinhood.spark.SparkAdapter
 
 class ChartAdapter(private var data: List<WeightEntity>) : SparkAdapter() {
-    override fun getY(index: Int): Float = data[index].weight
+    override fun getY(index: Int): Float = data[index].pounds
 
     override fun getItem(index: Int): Any = data[index]
 
