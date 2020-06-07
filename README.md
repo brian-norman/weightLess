@@ -20,7 +20,6 @@
 (Feel free to open a PR for any of these or something else you want in the app 😁)
 - [ ] Units for kg/lbs
 - [ ] Empty state for chart
-- [ ] When scrubbing, also show the date alongside the weight
 - [ ] CSV importing and exporting
 - [ ] Setting goal weight (adds a horizontal flat line to chart)
 - [ ] Hold & Press to enter bulk-select mode where you can bulk delete
