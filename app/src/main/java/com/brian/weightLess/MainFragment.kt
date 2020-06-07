@@ -112,7 +112,6 @@ class MainFragment : Fragment() {
                 } else {
                     viewModel.insertWeight(weightEntity)
                 }
-                weightDialogSharedViewModel.clearNewWeightEntity()
             }
         })
 
@@ -127,7 +126,6 @@ class MainFragment : Fragment() {
                 } else {
                     viewModel.updateWeight(editedWeightEntity)
                 }
-                weightDialogSharedViewModel.clearEditWeightEntity()
             }
         })
     }
