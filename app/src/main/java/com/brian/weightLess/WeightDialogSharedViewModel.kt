@@ -7,11 +7,11 @@ import com.brian.weightLess.data.WeightEntity
 
 class WeightDialogSharedViewModel : ViewModel() {
 
-    private val _newWeightEntity = MutableLiveData<WeightEntity>()
-    val newWeightEntity: LiveData<WeightEntity> = _newWeightEntity
+    private val _newWeightEntity = MutableLiveData<WeightEntity?>()
+    val newWeightEntity: MutableLiveData<WeightEntity?> = _newWeightEntity
 
-    private val _editWeightEntity = MutableLiveData<WeightEntity>()
-    val editWeightEntity: LiveData<WeightEntity> = _editWeightEntity
+    private val _editWeightEntity = MutableLiveData<WeightEntity?>()
+    val editWeightEntity: MutableLiveData<WeightEntity?> = _editWeightEntity
 
     fun saveNewWeightEntity(weightEntity: WeightEntity) = _newWeightEntity.postValue(weightEntity)
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -107,25 +108,27 @@ class MainFragment : Fragment() {
                 val collision = currentWeights.filter { it.date == newWeightEntity.date }
                 if (collision.isNotEmpty()) {
                     viewModel.updateWeight(collision[0].copy(weight = newWeightEntity.weight))
+                    Toast.makeText(context, "Updated existing entry with that date", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.insertWeight(weightEntity)
                 }
+                weightDialogSharedViewModel.clearNewWeightEntity()
             }
-            weightDialogSharedViewModel.clearNewWeightEntity()
         })
 
         weightDialogSharedViewModel.editWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
             weightEntity?.let { editedWeightEntity ->
                 val currentWeights = viewModel.weightEntities.value!!
-                val collision = currentWeights.filter { it.date == editedWeightEntity.date }
+                val collision = currentWeights.filter { it.date == editedWeightEntity.date && it.id != editedWeightEntity.id }
                 if (collision.isNotEmpty()) {
                     viewModel.updateWeight(collision[0].copy(weight = editedWeightEntity.weight))
                     viewModel.deleteWeight(editedWeightEntity)
+                    Toast.makeText(context, "Updated existing entry with that date", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.updateWeight(editedWeightEntity)
                 }
+                weightDialogSharedViewModel.clearEditWeightEntity()
             }
-            weightDialogSharedViewModel.clearEditWeightEntity()
         })
     }
 
