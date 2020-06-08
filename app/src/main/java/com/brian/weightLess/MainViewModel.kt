@@ -11,6 +11,7 @@ class MainViewModel(private val weightDao: WeightDao) : ViewModelProvider.Factor
         return MainViewModel(weightDao) as T
     }
 
+    // TODO: Use PagedList from Paging Library
     val weightEntities: LiveData<List<WeightEntity>> = weightDao.getAll().asLiveData()
 
     fun insertWeight(weightEntity: WeightEntity) {

@@ -90,7 +90,7 @@ class MainFragment : Fragment() {
 
         viewModel.weightEntities.observe(viewLifecycleOwner, Observer {
             val weights = it ?: emptyList()
-            chartAdapter.setData(weights)
+            chartAdapter.setData(weights.reversed())  // Most recent entry at the very end on chart
             weightAdapter.setData(weights)
             message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
         })

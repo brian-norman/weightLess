@@ -35,6 +35,7 @@ class WeightAdapter(
 
     fun setData(newData: List<WeightEntity>) {
         data = newData
+        // TODO This will cause the whole list to re-render, should use DiffUtil
         notifyDataSetChanged()
     }
 
