@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brian.weightLess.data.AppDatabase
 import com.brian.weightLess.data.WeightEntity
 import com.brian.weightLess.data.getDate
+import com.brian.weightLess.databinding.MainFragmentBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
+
+    private var _binding: MainFragmentBinding? = null
+    val binding: MainFragmentBinding get() = _binding!!
 
     private val viewModel: MainViewModel by viewModels {
         MainViewModel(AppDatabase(requireContext()).weightDao())
@@ -54,31 +57,32 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        toolbar.setTitle(R.string.app_name)
+        binding.toolbar.setTitle(R.string.app_name)
 
-        sparkView.adapter = chartAdapter
-        recyclerView.apply {
+        binding.sparkView.adapter = chartAdapter
+        binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = weightAdapter
         }
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
-        sparkView.setScrubListener {
+        binding.sparkView.setScrubListener {
             if (it != null) {
                 val weightEntity = it as WeightEntity
-                message.text = getString(R.string.scrubber_label_lbs, weightEntity.pounds.toString(), weightEntity.getDate())
+                binding.message.text = getString(R.string.scrubber_label_lbs, weightEntity.pounds.toString(), weightEntity.getDate())
             } else {
                 val weights = viewModel.weightEntities.value ?: emptyList()
-                message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
+                binding.message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
             }
         }
 
-        addWeightButton.setOnClickListener {
+        binding.addWeightButton.setOnClickListener {
             val action = MainFragmentDirections
                 .actionMainFragmentToWeightDialogFragment(
                     weightEntityDate = 0.toLong(),
@@ -92,7 +96,7 @@ class MainFragment : Fragment() {
             val weights = it ?: emptyList()
             chartAdapter.setData(weights.reversed())  // Most recent entry at the very end on chart
             weightAdapter.setData(weights)
-            message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
+            binding.message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
         })
 
         sharedViewModel.newWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->

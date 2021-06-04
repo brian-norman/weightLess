@@ -9,13 +9,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.brian.weightLess.data.WeightEntity
+import com.brian.weightLess.databinding.DialogWeightFragmentBinding
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.android.synthetic.main.dialog_weight_fragment.*
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
 
 class WeightDialogFragment: DialogFragment() {
+
+    private var _binding : DialogWeightFragmentBinding? = null
+    private val binding : DialogWeightFragmentBinding get() = _binding!!
 
     private val args: WeightDialogFragmentArgs by navArgs()
 
@@ -42,25 +45,26 @@ class WeightDialogFragment: DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.dialog_weight_fragment, container, false)
+        _binding = DialogWeightFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         if (args.weightEntityDate != 0.toLong()) {
-            dateTextInputEditText.setText(
+            binding.dateTextInputEditText.setText(
                 SimpleDateFormat("MMM d, yyyy", Locale.US)
                     .format(Date.from(Instant.ofEpochSecond(args.weightEntityDate)))
             )
         }
         if (args.weightEntityWeight != 0f) {
-            weightTextInputEditText.setText(args.weightEntityWeight.toString())
+            binding.weightTextInputEditText.setText(args.weightEntityWeight.toString())
         }
 
         initDatePicker()
 
-        toolbar.apply {
+        binding.toolbar.apply {
             title = if (args.shouldEdit) getString(R.string.edit_weight) else getString(R.string.new_weight)
             setNavigationOnClickListener { dismiss() }
             inflateMenu(R.menu.weight_dialog)
@@ -81,16 +85,16 @@ class WeightDialogFragment: DialogFragment() {
             sharedViewModel.saveEditWeightEntity(
                 WeightEntity(
                     id = args.weightEntityId,
-                    date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(dateTextInputEditText.text.toString()).toInstant().epochSecond,
-                    pounds = weightTextInputEditText.toFloatOrZero()
+                    date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(binding.dateTextInputEditText.text.toString()).toInstant().epochSecond,
+                    pounds = binding.weightTextInputEditText.toFloatOrZero()
                 )
             )
 
         } else {
             sharedViewModel.saveNewWeightEntity(
                 WeightEntity(
-                    date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(dateTextInputEditText.text.toString()).toInstant().epochSecond,
-                    pounds = weightTextInputEditText.toFloatOrZero()
+                    date = SimpleDateFormat("MMM d, yyyy", Locale.US).parse(binding.dateTextInputEditText.text.toString()).toInstant().epochSecond,
+                    pounds = binding.weightTextInputEditText.toFloatOrZero()
                 )
             )
         }
@@ -98,8 +102,8 @@ class WeightDialogFragment: DialogFragment() {
 
     private fun initDatePicker() {
 
-        if (dateTextInputEditText.text.isNullOrEmpty()) {
-            dateTextInputEditText.setText(
+        if (binding.dateTextInputEditText.text.isNullOrEmpty()) {
+            binding.dateTextInputEditText.setText(
                 SimpleDateFormat("MMM d, yyyy", Locale.US).format(
                     Date.from(Instant.now()))
             )
@@ -111,11 +115,11 @@ class WeightDialogFragment: DialogFragment() {
                 set(Calendar.YEAR, year)
                 set(Calendar.MONTH, month)
                 set(Calendar.DAY_OF_MONTH, day)
-                dateTextInputEditText.setText(SimpleDateFormat("MMM d, yyyy", Locale.US).format(myCalendar.time))
+                binding.dateTextInputEditText.setText(SimpleDateFormat("MMM d, yyyy", Locale.US).format(myCalendar.time))
             }
         }
 
-        dateTextInputEditText.setOnClickListener {
+        binding.dateTextInputEditText.setOnClickListener {
             DatePickerDialog(
                 requireContext(),
                 dateSetListener,
