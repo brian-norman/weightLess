@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 class MainFragment : Fragment() {
 
     private var _binding: MainFragmentBinding? = null
-    val binding: MainFragmentBinding get() = _binding!!
+    private val binding: MainFragmentBinding get() = _binding!!
 
     private val viewModel: MainViewModel by viewModels {
         MainViewModel(AppDatabase(requireContext()).weightDao())
@@ -30,7 +29,7 @@ class MainFragment : Fragment() {
     private val sharedViewModel: WeightDialogSharedViewModel by viewModels( {requireActivity()} )
 
     private val chartAdapter = ChartAdapter(emptyList())
-    private val weightAdapter = WeightAdapter(emptyList()) { onWeightEntryClicked(it) }
+    private val weightAdapter = WeightAdapter { onWeightEntryClicked(it) }
 
     private val navController by lazy { this.findNavController() }
 
@@ -61,8 +60,8 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.toolbar.setTitle(R.string.app_name)
 
         binding.sparkView.adapter = chartAdapter
@@ -92,14 +91,14 @@ class MainFragment : Fragment() {
             navController.navigate(action)
         }
 
-        viewModel.weightEntities.observe(viewLifecycleOwner, Observer {
+        viewModel.weightEntities.observe(viewLifecycleOwner, {
             val weights = it ?: emptyList()
             chartAdapter.setData(weights.reversed())  // Most recent entry at the very end on chart
             weightAdapter.setData(weights)
             binding.message.text = if (weights.size < 2) getString(R.string.empty_state) else getString(R.string.scrub_empty)
         })
 
-        sharedViewModel.newWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
+        sharedViewModel.newWeightEntity.observe(viewLifecycleOwner, { weightEntity ->
             weightEntity?.let { newWeightEntity ->
                 val currentWeights = viewModel.weightEntities.value ?: listOf()
                 val collision = currentWeights.filter { it.date == newWeightEntity.date }
@@ -112,7 +111,7 @@ class MainFragment : Fragment() {
             }
         })
 
-        sharedViewModel.editWeightEntity.observe(viewLifecycleOwner, Observer { weightEntity ->
+        sharedViewModel.editWeightEntity.observe(viewLifecycleOwner, { weightEntity ->
             weightEntity?.let { editedWeightEntity ->
                 val currentWeights = viewModel.weightEntities.value!!
                 val collision = currentWeights.filter { it.date == editedWeightEntity.date && it.id != editedWeightEntity.id }
@@ -137,5 +136,4 @@ class MainFragment : Fragment() {
             )
         navController.navigate(action)
     }
-
 }
