@@ -7,8 +7,12 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val weightDao: WeightDao) : ViewModelProvider.Factory, ViewModel() {
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return MainViewModel(weightDao) as T
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(weightDao) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 
     // TODO: Use PagedList from Paging Library
@@ -31,5 +35,4 @@ class MainViewModel(private val weightDao: WeightDao) : ViewModelProvider.Factor
         viewModelScope.launch { weightDao.delete(weight) }
         return weight
     }
-
 }

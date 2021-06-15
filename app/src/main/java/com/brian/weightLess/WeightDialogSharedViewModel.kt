@@ -14,5 +14,4 @@ class WeightDialogSharedViewModel : ViewModel() {
     fun saveNewWeightEntity(weightEntity: WeightEntity) = _newWeightEntity.postValue(weightEntity)
 
     fun saveEditWeightEntity(weightEntity: WeightEntity) = _editWeightEntity.postValue(weightEntity)
-
 }
