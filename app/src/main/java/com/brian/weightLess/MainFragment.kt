@@ -12,20 +12,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.brian.weightLess.data.AppDatabase
 import com.brian.weightLess.data.WeightEntity
 import com.brian.weightLess.data.getDate
 import com.brian.weightLess.databinding.MainFragmentBinding
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
     private var _binding: MainFragmentBinding? = null
     private val binding: MainFragmentBinding get() = _binding!!
 
-    private val viewModel: MainViewModel by viewModels {
-        MainViewModel(AppDatabase(requireContext()).weightDao())
-    }
+    private val viewModel: MainViewModel by viewModels()
+
     private val sharedViewModel: WeightDialogSharedViewModel by viewModels( {requireActivity()} )
 
     private val chartAdapter = ChartAdapter(emptyList())

@@ -101,7 +101,6 @@ class WeightDialogFragment: DialogFragment() {
     }
 
     private fun initDatePicker() {
-
         if (binding.dateTextInputEditText.text.isNullOrEmpty()) {
             binding.dateTextInputEditText.setText(
                 SimpleDateFormat("MMM d, yyyy", Locale.US).format(

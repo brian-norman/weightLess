@@ -1,19 +1,17 @@
 package com.brian.weightLess
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.brian.weightLess.data.WeightDao
 import com.brian.weightLess.data.WeightEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(private val weightDao: WeightDao) : ViewModelProvider.Factory, ViewModel() {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(weightDao) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
+@HiltViewModel
+class MainViewModel @Inject constructor(private val weightDao: WeightDao) : ViewModel() {
 
     // TODO: Use PagedList from Paging Library
     val weightEntities: LiveData<List<WeightEntity>> = weightDao.getAll().asLiveData()
